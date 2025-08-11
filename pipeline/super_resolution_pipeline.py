@@ -136,11 +136,11 @@ class SuperResolutionPipeline:
         if output_path:
             self._save_final_result(hr_final, output_path)
 
-        from utils.metrics_utils import calculate_metrics
+        """from utils.metrics_utils import calculate_metrics
         metrics1 = calculate_metrics('examples/hr_base_demo.png', 'examples/gt.png', 10, True)
         metrics2 = calculate_metrics('examples/sr_demo.png', 'examples/gt.png', 10, True)
         print(f'PSNR: {metrics1["psnr"]:.4f} dB, SSIM: {metrics1["ssim"]:.4f}')
-        print(f'PSNR: {metrics2["psnr"]:.4f} dB, SSIM: {metrics2["ssim"]:.4f}')
+        print(f'PSNR: {metrics2["psnr"]:.4f} dB, SSIM: {metrics2["ssim"]:.4f}')"""
         
         # 返回结果和处理信息
         process_info = {
