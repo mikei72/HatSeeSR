@@ -1,4 +1,4 @@
-python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Urban100_LR_x4 --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs
+python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\LR --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga
 
-python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Urban100_HR --pred_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs
+python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\GT --pred_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga
 

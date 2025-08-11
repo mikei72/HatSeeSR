@@ -177,7 +177,7 @@ def initialize_models_and_pipeline(
     args.vae_encoder_tiled_size = 1024
     args.latent_tiled_size = 96
     args.latent_tiled_overlap = 32
-    args.upscale = 4
+    args.upscale = 1
     args.sample_times = 1
     args.align_method = "adain"
     args.start_steps = 999

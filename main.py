@@ -353,9 +353,19 @@ def main():
     parser.add_argument("--output", type=str, help="输出图像路径")
     
     # 批量处理
-    parser.add_argument("--input_dir", type=str, help="输入目录")
-    parser.add_argument("--output_dir", type=str, help="输出目录")
-    
+    parser.add_argument(
+        "--input_dir",
+        type=str,
+        nargs='+',  # 支持多个目录
+        help="输入图像目录，可以同时指定多个"
+    )
+    parser.add_argument(
+        "--output_dir",
+        type=str,
+        nargs='+',  # 支持多个目录
+        help="输出图像目录，顺序与输入目录一一对应"
+    )
+
     # LoRA训练
     parser.add_argument("--train_lora", action="store_true", help="训练LoRA")
     parser.add_argument("--train_data", type=str, help="训练数据目录")
@@ -370,7 +380,7 @@ def main():
     parser.add_argument("--evaluate", action="store_true", help="评估结果")
     parser.add_argument("--gt_dir", type=str, help="真实高分辨率图像目录")
     parser.add_argument("--pred_dir", type=str, help="预测高分辨率图像目录")
-    
+
     # 测试数据创建
     parser.add_argument("--create_test_data", action="store_true", help="创建测试数据")
     parser.add_argument("--test_image", type=str, help="测试图像路径")
@@ -427,17 +437,21 @@ def main():
         print("处理信息:")
         for key, value in process_info.items():
             print(f"  {key}: {value}")
-    
+
     elif args.input_dir and args.output_dir:
-        # 批量处理
-        results = process_batch_images(
-            input_dir=args.input_dir,
-            output_dir=args.output_dir,
-            strength=args.strength,
-            device=args.device
-        )
-        
-        print(f"批量处理完成，共处理 {len(results)} 张图像")
+        if len(args.input_dir) != len(args.output_dir):
+            raise ValueError("输入目录与输出目录数量必须相同！")
+
+        for in_dir, out_dir in zip(args.input_dir, args.output_dir):
+            print(f"处理输入目录: {in_dir} -> 输出目录: {out_dir}")
+            results = process_batch_images(
+                input_dir=in_dir,
+                output_dir=out_dir,
+                strength=args.strength,
+                device=args.device
+            )
+
+            print(f"批量处理完成，共处理 {len(results)} 张图像")
     
     else:
         print("请指定操作类型:")
