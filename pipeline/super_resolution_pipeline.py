@@ -5,6 +5,8 @@ from typing import Union, Optional, Tuple
 import os
 from pathlib import Path
 
+from torchaudio.functional import resample
+
 from models.hat_model import HATModel
 from models.seesr_model import initialize_models_and_pipeline, enhance_single_image
 from config.config import Config
@@ -96,6 +98,9 @@ class SuperResolutionPipeline:
             args=self.args
         )
 
+        w, h = hr_final.size
+        hr_final = hr_final.resize((w // 4, h // 4), resample=Image.Resampling.LANCZOS)
+
         return prompt, hr_final
     
     def process(self, 
@@ -132,8 +137,8 @@ class SuperResolutionPipeline:
             self._save_final_result(hr_final, output_path)
 
         from utils.metrics_utils import calculate_metrics
-        metrics1 = calculate_metrics('examples/demo_result_hr_base.png', 'examples/gt.png', 4, True)
-        metrics2 = calculate_metrics('examples/demo_result.png', 'examples/gt.png', 4, True)
+        metrics1 = calculate_metrics('examples/hr_base_demo.png', 'examples/gt.png', 10, True)
+        metrics2 = calculate_metrics('examples/sr_demo.png', 'examples/gt.png', 10, True)
         print(f'PSNR: {metrics1["psnr"]:.4f} dB, SSIM: {metrics1["ssim"]:.4f}')
         print(f'PSNR: {metrics2["psnr"]:.4f} dB, SSIM: {metrics2["ssim"]:.4f}')
         
@@ -159,7 +164,7 @@ class SuperResolutionPipeline:
             hr_base_pil.save(hr_base_path)
             
             # 保存文本提示词
-            prompt_path = output_path.replace("sr", "prompt")
+            prompt_path = output_path.replace("sr", "prompt").replace("png", "txt")
             with open(prompt_path, 'w', encoding='utf-8') as f:
                 f.write(text_prompt)
     

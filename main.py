@@ -96,8 +96,7 @@ def process_batch_images(input_dir: str,
     
     # 创建处理流程
     pipeline = SuperResolutionPipeline(
-        device=device,
-        lora_path=lora_path
+        device=device
     )
     
     # 批量处理
@@ -126,15 +125,15 @@ def process_batch_images(input_dir: str,
     print(f"批量处理完成，成功处理 {len(results)} 张图像")
     return results
 
-def train_lora(train_data_dir: str,
+"""def train_lora(train_data_dir: str,
                output_dir: str = "checkpoints",
-               base_model_path: str = Config.SD_MODEL_PATH,
+               base_model_path: str = Config.SEESR_MODEL_PATH,
                num_epochs: int = Config.NUM_EPOCHS,
                batch_size: int = Config.BATCH_SIZE,
                learning_rate: float = Config.LEARNING_RATE,
                device: str = "cuda",
                ram_model_path: Optional[str] = None):
-    """
+    
     训练LoRA (使用 DetailEnhancementTrainer 进行 ControlNet + LoRA 联合训练)
 
     Args:
@@ -146,7 +145,7 @@ def train_lora(train_data_dir: str,
         learning_rate: 学习率
         device: 计算设备
         ram_model_path: RAM模型路径 (用于生成提示词)
-    """
+    
     print("开始 LoRA (ControlNet + LoRA) 联合训练...")
 
     # --- 数据准备 ---
@@ -189,7 +188,7 @@ def train_lora(train_data_dir: str,
         save_steps=Config.SAVE_STEPS
     )
 
-    print("LoRA (ControlNet + LoRA) 联合训练完成")
+    print("LoRA (ControlNet + LoRA) 联合训练完成")"""
 
 
 def evaluate_results(gt_dir: str,
@@ -348,13 +347,7 @@ def main():
     parser.add_argument("--device", type=str, default="cuda", help="计算设备")
     parser.add_argument("--strength", type=float, default=Config.DEFAULT_STRENGTH, 
                        help="重绘强度")
-    
-    # 模型路径
-    parser.add_argument("--hat_model", type=str, help="HAT模型路径")
-    parser.add_argument("--ram_model", type=str, help="RAM模型路径")
-    parser.add_argument("--sd_model", type=str, help="SD模型路径")
-    parser.add_argument("--lora_path", type=str, help="LoRA权重路径")
-    
+
     # 单张图像处理
     parser.add_argument("--input", type=str, help="输入图像路径")
     parser.add_argument("--output", type=str, help="输出图像路径")
@@ -371,7 +364,6 @@ def main():
     parser.add_argument("--lr", type=float, default=Config.LEARNING_RATE, help="学习率")
     parser.add_argument("--sd_model", type=str, default="models/weights/stable-diffusion-v1-5",
                         help="基础模型路径")
-    parser.add_argument("--device", type=str, default="cuda", help="计算设备")
     parser.add_argument("--ram_model", type=str, help="RAM模型路径（用于生成提示词）")
     
     # 评估
@@ -391,7 +383,7 @@ def main():
     Config.create_directories()
     
     # 根据参数执行相应操作
-    if args.train_lora:
+    """if args.train_lora:
         if not args.train_data:
             print("错误: 训练LoRA需要指定训练数据目录 (--train_data)")
             return
@@ -406,8 +398,9 @@ def main():
             device=args.device,
             ram_model_path=args.ram_model
         )
+    """
     
-    elif args.evaluate:
+    if args.evaluate:
         if not args.gt_dir or not args.pred_dir:
             print("错误: 评估需要指定真实图像目录 (--gt_dir) 和预测图像目录 (--pred_dir)")
             return
@@ -441,8 +434,7 @@ def main():
             input_dir=args.input_dir,
             output_dir=args.output_dir,
             strength=args.strength,
-            device=args.device,
-            lora_path=args.lora_path
+            device=args.device
         )
         
         print(f"批量处理完成，共处理 {len(results)} 张图像")

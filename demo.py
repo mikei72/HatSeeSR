@@ -34,7 +34,7 @@ def demo_single_image_processing():
         return
     
     # 创建输出目录
-    output_dir = "outputs"
+    output_dir = "examples/"
     os.makedirs(output_dir, exist_ok=True)
     
     # 创建处理流程
@@ -42,7 +42,7 @@ def demo_single_image_processing():
     pipeline = SuperResolutionPipeline(device="cuda")
     
     # 处理图像
-    output_path = os.path.join(output_dir, "demo_result.png")
+    output_path = os.path.join(output_dir, "sr_demo.png")
     
     print(f"开始处理图像: {test_image_path}")
     start_time = time.time()

@@ -1,3 +1,5 @@
-python main.py --input_dir D:\code\HAT-main\datasets\BSD100\LR_bicubic\X4 --output_dir D:\code\S2-SR-main\outputs
+python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\BSD100\BSD100_LR_x4 --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs
 
-python main.py --evaluate --gt_dir D:\code\HAT-main\datasets\BSD100\HR --pred_dir D:\code\S2-SR-main\outputs
+python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\BSD100\BSD100_HR --pred_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs
+
+python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\tmp --pred_dir D:\TJU\3.2\IntelliAnalyze\dataset\tmp2
