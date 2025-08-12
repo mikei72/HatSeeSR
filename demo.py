@@ -25,7 +25,7 @@ def demo_single_image_processing():
     print("=" * 60)
     
     # 创建测试图像（如果没有的话）
-    test_image_path = "examples/test.png"
+    test_image_path = "examples/test3.png"
     if not os.path.exists(test_image_path):
         print("创建测试图像...")
         # 这里可以创建一个简单的测试图像
@@ -42,7 +42,7 @@ def demo_single_image_processing():
     pipeline = SuperResolutionPipeline(device="cuda")
     
     # 处理图像
-    output_path = os.path.join(output_dir, "sr_demo.png")
+    output_path = os.path.join(output_dir, "sr_demo3.png")
     
     print(f"开始处理图像: {test_image_path}")
     start_time = time.time()

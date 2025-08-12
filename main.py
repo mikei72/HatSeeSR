@@ -295,7 +295,8 @@ def evaluate_results(gt_dir: str,
     df_final = pd.concat([df, avg_row], ignore_index=True)
 
     # 保存到 CSV 文件
-    output_csv_path = os.path.join(output_dir, 'evaluation_metrics_comparison.csv')
+    pred_dir_name = os.path.basename(os.path.normpath(pred_dir))
+    output_csv_path = os.path.join(output_dir, f'{pred_dir_name}.csv')
     df_final.to_csv(output_csv_path, index=False, float_format='%.4f')
 
     print("\n--- 全局评估摘要 ---")
@@ -378,7 +379,11 @@ def main():
     
     # 评估
     parser.add_argument("--evaluate", action="store_true", help="评估结果")
-    parser.add_argument("--gt_dir", type=str, help="真实高分辨率图像目录")
+    parser.add_argument(
+        "--gt_dir",
+        type=str,
+        nargs='+',
+        help="真实高分辨率图像目录")
     parser.add_argument("--pred_dir", type=str, help="预测高分辨率图像目录")
 
     # 测试数据创建
@@ -438,11 +443,11 @@ def main():
         for key, value in process_info.items():
             print(f"  {key}: {value}")
 
-    elif args.input_dir and args.output_dir:
+    elif args.input_dir and args.output_dir and args.gt_dir:
         if len(args.input_dir) != len(args.output_dir):
             raise ValueError("输入目录与输出目录数量必须相同！")
 
-        for in_dir, out_dir in zip(args.input_dir, args.output_dir):
+        for in_dir, out_dir, gt_dir in zip(args.input_dir, args.output_dir, args.gt_dir):
             print(f"处理输入目录: {in_dir} -> 输出目录: {out_dir}")
             results = process_batch_images(
                 input_dir=in_dir,
@@ -452,11 +457,13 @@ def main():
             )
 
             print(f"批量处理完成，共处理 {len(results)} 张图像")
+
+            evaluate_results(gt_dir, out_dir)
     
     else:
         print("请指定操作类型:")
         print("  单张图像处理: --input <输入图像> --output <输出图像>")
-        print("  批量处理: --input_dir <输入目录> --output_dir <输出目录>")
+        print("  批量处理: --input_dir <输入目录> --output_dir <输出目录> --gt_dir <真实图像目录>")
         print("  训练LoRA: --train_lora --train_data <训练数据目录>")
         print("  评估结果: --evaluate --gt_dir <真实图像目录> --pred_dir <预测图像目录>")
         print("  创建测试数据: --create_test_data --test_image <测试图像> --test_output <输出目录>")
