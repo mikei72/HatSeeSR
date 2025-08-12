@@ -20,6 +20,8 @@ from torch.nn import functional as F
 
 from diffusers.configuration_utils import ConfigMixin, register_to_config
 from diffusers.loaders import FromOriginalControlnetMixin
+#from diffusers.loaders.single_file_model import FromOriginalModelMixin
+
 from diffusers.utils import BaseOutput, logging
 from diffusers.models.attention_processor import AttentionProcessor, AttnProcessor
 from diffusers.models.embeddings import TextImageProjection, TextImageTimeEmbedding, TextTimeEmbedding, TimestepEmbedding, Timesteps
@@ -102,6 +104,7 @@ class ControlNetConditioningEmbedding(nn.Module):
 
 
 class ControlNetModel(ModelMixin, ConfigMixin, FromOriginalControlnetMixin):
+#class ControlNetModel(ModelMixin, ConfigMixin, FromOriginalModelMixin):
     """
     A ControlNet model.
 

@@ -8,10 +8,10 @@ class Config:
     PROJECT_ROOT = Path(__file__).parent.parent
     
     # 模型路径配置
-    HAT_MODEL_PATH = os.getenv("HAT_MODEL_PATH", r"models\weights\HAT-L_SRx4_ImageNet-pretrain.pth")
-    RAM_FT_PATH = os.getenv("RAM_MODEL_PATH", r"models\weights\DAPE.pth")
-    SEESR_MODEL_PATH = os.getenv("SD_MODEL_PATH", r"models\weights\seesr")
-    PRETRAINED_MODEL_PATH = os.getenv("PRETRAINED_MODEL_PATH", r"models\weights\sd-turbo")
+    HAT_MODEL_PATH = os.getenv("HAT_MODEL_PATH", "/inspire/hdd/project/embodied-multimodality/public/xyzii/Diff/HatSeeSR/models/weights/HAT-L_SRx4_ImageNet-pretrain.pth")
+    RAM_FT_PATH = os.getenv("RAM_MODEL_PATH", "/inspire/hdd/project/embodied-multimodality/public/xyzii/Diff/HatSeeSR/models/weights/DAPE.pth")
+    SEESR_MODEL_PATH = os.getenv("SD_MODEL_PATH", "/inspire/hdd/project/embodied-multimodality/public/xyzii/Diff/HatSeeSR/models/weights/seesr")
+    PRETRAINED_MODEL_PATH = os.getenv("PRETRAINED_MODEL_PATH", "/inspire/hdd/project/embodied-multimodality/public/xyzii/Diff/HatSeeSR/models/weights/sd-turbo")
     
     # 输出目录
     OUTPUT_DIR = PROJECT_ROOT / "outputs"
