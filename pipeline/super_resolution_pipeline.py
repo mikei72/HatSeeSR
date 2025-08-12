@@ -98,8 +98,8 @@ class SuperResolutionPipeline:
             args=self.args
         )
 
-        # w, h = hr_final.size
-        # hr_final = hr_final.resize((w // 4, h // 4), resample=Image.Resampling.LANCZOS)
+        w, h = hr_final.size
+        hr_final = hr_final.resize((w // 4, h // 4), resample=Image.Resampling.LANCZOS)
 
         return prompt, hr_final
     
