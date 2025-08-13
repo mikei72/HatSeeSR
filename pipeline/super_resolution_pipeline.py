@@ -11,8 +11,6 @@ from models.hat_model import HATModel
 from models.seesr_model import initialize_models_and_pipeline, enhance_single_image
 from config.config import Config
 
-from utils.prompt_optimizer import generate_optimized_prompt
-
 class SuperResolutionPipeline:
     """文本引导图像超分辨率处理流程"""
     

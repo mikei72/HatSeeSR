@@ -22,7 +22,6 @@ sys.path.append(str(Path(__file__).parent))
 
 from config.config import Config
 from pipeline.super_resolution_pipeline import SuperResolutionPipeline
-from utils.image_utils import load_image, save_image, create_low_resolution_image
 
 def process_single_image(input_path: str, 
                         output_path: str,
@@ -124,71 +123,6 @@ def process_batch_images(input_dir: str,
     
     print(f"批量处理完成，成功处理 {len(results)} 张图像")
     return results
-
-"""def train_lora(train_data_dir: str,
-               output_dir: str = "checkpoints",
-               base_model_path: str = Config.SEESR_MODEL_PATH,
-               num_epochs: int = Config.NUM_EPOCHS,
-               batch_size: int = Config.BATCH_SIZE,
-               learning_rate: float = Config.LEARNING_RATE,
-               device: str = "cuda",
-               ram_model_path: Optional[str] = None):
-    
-    训练LoRA (使用 DetailEnhancementTrainer 进行 ControlNet + LoRA 联合训练)
-
-    Args:
-        train_data_dir: 训练数据目录 (假设包含原始图和高清图，或已处理好的控制图)
-        output_dir: 输出目录
-        base_model_path: 基础模型路径 (本地 Stable Diffusion v1.5 路径)
-        num_epochs: 训练轮数
-        batch_size: 批次大小
-        learning_rate: 学习率
-        device: 计算设备
-        ram_model_path: RAM模型路径 (用于生成提示词)
-    
-    print("开始 LoRA (ControlNet + LoRA) 联合训练...")
-
-    # --- 数据准备 ---
-    # 假设 prepare_training_data 生成一个包含图像文件名和对应 prompt 的 CSV 文件
-    # 这里使用 prompts.csv 作为文件名，与 DetailEnhancementTrainer 中的示例一致
-    prompt_file = os.path.join(output_dir, "prompts.csv")  # 或 train_data_dir
-    prepare_training_data(
-        image_dir=train_data_dir,
-        output_prompt_file=prompt_file,
-        ram_model_path=ram_model_path
-    )
-
-    # --- 数据集创建 ---
-    # 使用 SuperResolutionRefinementDataset，需要 control 图和 target 图
-    # 这里假设 train_data_dir 同时是 control_dir 和 target_dir
-    # 实际应用中，可能需要两个不同的目录，例如：
-    # control_dir = os.path.join(train_data_dir, "canny_edges")
-    # target_dir = os.path.join(train_data_dir, "high_resolution")
-    train_dataset = SuperResolutionRefinementDataset(
-        control_dir=train_data_dir,  # 控制图目录 (如 Canny 边缘)
-        target_dir=train_data_dir,  # 目标图目录 (高清原图)
-        prompt_file=prompt_file  # 提示词文件
-    )
-
-    # --- 训练器创建 ---
-    # 使用 DetailEnhancementTrainer，它会处理 ControlNet 和 LoRA 的联合训练
-    trainer = DetailEnhancementTrainer(
-        base_model_path=base_model_path,  # 传入本地模型路径
-        output_dir=output_dir,  # 检查点输出目录
-        device=device,  # 计算设备
-        use_lora=True  # 明确使用 LoRA
-    )
-
-    # --- 开始训练 ---
-    trainer.train(
-        train_dataset=train_dataset,
-        num_epochs=num_epochs,
-        batch_size=batch_size,
-        learning_rate=learning_rate,
-        save_steps=Config.SAVE_STEPS
-    )
-
-    print("LoRA (ControlNet + LoRA) 联合训练完成")"""
 
 
 def evaluate_results(gt_dir: str,
@@ -308,37 +242,6 @@ def evaluate_results(gt_dir: str,
     print(f"\n详细对比结果已保存至: {output_csv_path}")
     print("评估完成。")
 
-def create_test_data(input_image: str, output_dir: str, scale_factor: int = 4):
-    """
-    创建测试数据（从高分辨率图像生成低分辨率图像）
-    
-    Args:
-        input_image: 输入高分辨率图像
-        output_dir: 输出目录
-        scale_factor: 缩放因子
-    """
-    print("正在创建测试数据...")
-    
-    # 创建输出目录
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # 加载高分辨率图像
-    hr_image = load_image(input_image)
-    
-    # 创建低分辨率图像
-    lr_image = create_low_resolution_image(hr_image, scale_factor)
-    
-    # 保存图像
-    base_name = Path(input_image).stem
-    lr_path = os.path.join(output_dir, f"{base_name}_lr.png")
-    hr_path = os.path.join(output_dir, f"{base_name}_hr.png")
-    
-    save_image(lr_image, lr_path)
-    save_image(hr_image, hr_path)
-    
-    print(f"测试数据已保存到: {output_dir}")
-    print(f"低分辨率图像: {lr_path}")
-    print(f"高分辨率图像: {hr_path}")
 
 def main():
     """主函数"""
@@ -346,8 +249,6 @@ def main():
     
     # 基本参数
     parser.add_argument("--device", type=str, default="cuda", help="计算设备")
-    parser.add_argument("--strength", type=float, default=Config.DEFAULT_STRENGTH, 
-                       help="重绘强度")
 
     # 单张图像处理
     parser.add_argument("--input", type=str, help="输入图像路径")
@@ -366,16 +267,6 @@ def main():
         nargs='+',  # 支持多个目录
         help="输出图像目录，顺序与输入目录一一对应"
     )
-
-    # LoRA训练
-    parser.add_argument("--train_lora", action="store_true", help="训练LoRA")
-    parser.add_argument("--train_data", type=str, help="训练数据目录")
-    parser.add_argument("--epochs", type=int, default=Config.NUM_EPOCHS, help="训练轮数")
-    parser.add_argument("--batch_size", type=int, default=Config.BATCH_SIZE, help="批次大小")
-    parser.add_argument("--lr", type=float, default=Config.LEARNING_RATE, help="学习率")
-    parser.add_argument("--sd_model", type=str, default="models/weights/stable-diffusion-v1-5",
-                        help="基础模型路径")
-    parser.add_argument("--ram_model", type=str, help="RAM模型路径（用于生成提示词）")
     
     # 评估
     parser.add_argument("--evaluate", action="store_true", help="评估结果")
@@ -385,35 +276,11 @@ def main():
         nargs='+',
         help="真实高分辨率图像目录")
     parser.add_argument("--pred_dir", type=str, help="预测高分辨率图像目录")
-
-    # 测试数据创建
-    parser.add_argument("--create_test_data", action="store_true", help="创建测试数据")
-    parser.add_argument("--test_image", type=str, help="测试图像路径")
-    parser.add_argument("--test_output", type=str, help="测试数据输出目录")
-    parser.add_argument("--scale_factor", type=int, default=4, help="缩放因子")
     
     args = parser.parse_args()
     
     # 创建必要的目录
     Config.create_directories()
-    
-    # 根据参数执行相应操作
-    """if args.train_lora:
-        if not args.train_data:
-            print("错误: 训练LoRA需要指定训练数据目录 (--train_data)")
-            return
-
-        train_lora(
-            train_data_dir=args.train_data,
-            output_dir="checkpoints",
-            base_model_path=args.sd_model or Config.SD_MODEL_PATH,
-            num_epochs=args.epochs,
-            batch_size=args.batch_size,
-            learning_rate=args.lr,
-            device=args.device,
-            ram_model_path=args.ram_model
-        )
-    """
     
     if args.evaluate:
         if not args.gt_dir or not args.pred_dir:
@@ -421,13 +288,6 @@ def main():
             return
         
         evaluate_results(args.gt_dir, args.pred_dir)
-    
-    elif args.create_test_data:
-        if not args.test_image or not args.test_output:
-            print("错误: 创建测试数据需要指定测试图像 (--test_image) 和输出目录 (--test_output)")
-            return
-        
-        create_test_data(args.test_image, args.test_output, args.scale_factor)
     
     elif args.input and args.output:
         # 单张图像处理
@@ -464,9 +324,7 @@ def main():
         print("请指定操作类型:")
         print("  单张图像处理: --input <输入图像> --output <输出图像>")
         print("  批量处理: --input_dir <输入目录> --output_dir <输出目录> --gt_dir <真实图像目录>")
-        print("  训练LoRA: --train_lora --train_data <训练数据目录>")
         print("  评估结果: --evaluate --gt_dir <真实图像目录> --pred_dir <预测图像目录>")
-        print("  创建测试数据: --create_test_data --test_image <测试图像> --test_output <输出目录>")
 
 if __name__ == "__main__":
     main()
