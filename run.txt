@@ -5,7 +5,7 @@ python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4
 
 
 BSD100:
-python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\BSD100\BSD100_LR_x4 --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\bsd
+python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\BSD100\LR --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\bsd-prompt-1 --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\BSD100\HR
 
 python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\BSD100\BSD100_HR --pred_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\bsd
 
@@ -18,6 +18,6 @@ python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Ur
 
 
 both:
-python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\LR D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Urban100_LR_x4 --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga-inf-8 D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\urban-inf-8  --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\GT D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Urban100_HR
+python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\LR D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Urban100_LR_x4 --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga-prompt-1 D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\urban-prompt-1 --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\GT D:\TJU\3.2\IntelliAnalyze\dataset\Urban100\Urban100_HR
 
 

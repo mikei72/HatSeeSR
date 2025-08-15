@@ -166,8 +166,17 @@ def initialize_models_and_pipeline(
     args.seed = seed
 
     args.prompt = ""
-    args.added_prompt = "clean, high-resolution, 8k"
-    args.negative_prompt = "dotted, noise, blur, lowres, smooth"
+    args.added_prompt =  (
+        "masterpiece, best quality, photorealistic, sharp focus, "
+        "accurate geometry, clean edges, fine microtexture, "
+        "natural lighting, realistic materials"
+    )
+    args.negative_prompt = (
+        "over-sharpening, over-smoothing, waxy skin, plastic look, "
+        "color bleeding, chromatic aberration, ringing, banding, "
+        "checkerboard artifacts, jpeg artifacts, noise, blur, glow, "
+        "low contrast, oversaturation, lowres, bad anatomy, extra digits"
+    )
     args.guidance_scale = 1.0
     args.conditioning_scale = 1.0
     args.blending_alpha = 1.0

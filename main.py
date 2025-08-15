@@ -14,6 +14,7 @@ import sys
 from pathlib import Path
 from typing import List, Optional
 import pandas as pd
+from typing import Any
 
 from utils.metrics_utils import calculate_metrics
 
@@ -45,14 +46,12 @@ def process_single_image(input_path: str,
     
     # 创建处理流程
     pipeline = SuperResolutionPipeline(
-        device=device,
-        lora_path=lora_path
+        device=device
     )
     
     # 执行超分辨率处理
     hr_final, process_info = pipeline.process(
         lr_image=input_path,
-        strength=strength,
         save_intermediate=True,
         output_path=output_path
     )
@@ -62,9 +61,7 @@ def process_single_image(input_path: str,
 
 def process_batch_images(input_dir: str,
                         output_dir: str,
-                        strength: float = Config.DEFAULT_STRENGTH,
-                        device: str = "cuda",
-                        lora_path: Optional[str] = None) -> List[dict]:
+                        pipeline: Any) -> List[dict]:
     """
     批量处理图像
     
@@ -93,11 +90,6 @@ def process_batch_images(input_dir: str,
     
     print(f"找到 {len(input_files)} 张图像")
     
-    # 创建处理流程
-    pipeline = SuperResolutionPipeline(
-        device=device
-    )
-    
     # 批量处理
     results = []
     for i, filename in enumerate(input_files):
@@ -109,13 +101,12 @@ def process_batch_images(input_dir: str,
         try:
             hr_final, process_info = pipeline.process(
                 lr_image=input_path,
-                strength=strength,
                 save_intermediate=True,
                 output_path=output_path
             )
             
             results.append(process_info)
-            print(f"✓ {filename} 处理完成")
+            print(f"✓ {filename} 处理完成\n")
             
         except Exception as e:
             print(f"✗ {filename} 处理失败: {e}")
@@ -307,13 +298,17 @@ def main():
         if len(args.input_dir) != len(args.output_dir):
             raise ValueError("输入目录与输出目录数量必须相同！")
 
+        # 创建处理流程
+        pipeline = SuperResolutionPipeline(
+            device=args.device
+        )
+
         for in_dir, out_dir, gt_dir in zip(args.input_dir, args.output_dir, args.gt_dir):
             print(f"处理输入目录: {in_dir} -> 输出目录: {out_dir}")
             results = process_batch_images(
                 input_dir=in_dir,
                 output_dir=out_dir,
-                strength=args.strength,
-                device=args.device
+                pipeline=pipeline
             )
 
             print(f"批量处理完成，共处理 {len(results)} 张图像")

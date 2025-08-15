@@ -103,7 +103,6 @@ class SuperResolutionPipeline:
     
     def process(self, 
                lr_image: Union[str, Image.Image, np.ndarray],
-               strength: float = Config.DEFAULT_STRENGTH,
                save_intermediate: bool = False,
                output_path: Optional[str] = None) -> Tuple[Image.Image, dict]:
         """
@@ -146,7 +145,6 @@ class SuperResolutionPipeline:
             "hr_base_size": hr_base.shape[:2],
             "final_size": hr_final.size,
             "text_prompt": text_prompt,
-            "strength": strength,
             "upscale_factor": Config.UPSCALE_FACTOR
         }
         
@@ -182,43 +180,3 @@ class SuperResolutionPipeline:
             return (image.shape[1], image.shape[0])
         else:
             return (0, 0)
-    
-    def batch_process(self, 
-                     lr_images: list,
-                     strength: float = Config.DEFAULT_STRENGTH,
-                     output_dir: Optional[str] = None) -> list:
-        """
-        批量处理图像
-        
-        Args:
-            lr_images: 低分辨率图像列表
-            strength: 重绘强度
-            output_dir: 输出目录
-            
-        Returns:
-            处理结果列表
-        """
-        results = []
-        
-        for i, lr_image in enumerate(lr_images):
-            print(f"处理第 {i+1}/{len(lr_images)} 张图像...")
-            
-            # 生成输出路径
-            output_path = None
-            if output_dir:
-                output_path = os.path.join(output_dir, f"result_{i:04d}.png")
-            
-            # 处理单张图像
-            hr_final, process_info = self.process(
-                lr_image, 
-                strength, 
-                save_intermediate=True,
-                output_path=output_path
-            )
-            
-            results.append({
-                "image": hr_final,
-                "info": process_info
-            })
-
-        return results
