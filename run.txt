@@ -1,5 +1,5 @@
 Manga109:
-python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\LR --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga
+python main.py --input_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109-test\LR --output_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga-test-prompt-obj --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109-test\GT
 
 python main.py --evaluate --gt_dir D:\TJU\3.2\IntelliAnalyze\dataset\Manga109\X4\GT --pred_dir D:\TJU\3.2\IntelliAnalyze\HatSeeSR\outputs\manga
 

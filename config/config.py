@@ -10,7 +10,8 @@ class Config:
     # 模型路径配置
     HAT_MODEL_PATH = os.getenv("HAT_MODEL_PATH", r"models\weights\HAT-L_SRx4_ImageNet-pretrain.pth")
     RAM_FT_PATH = os.getenv("RAM_MODEL_PATH", r"models\weights\DAPE.pth")
-    SEESR_MODEL_PATH = os.getenv("SD_MODEL_PATH", r"models\weights\seesr")
+    # SEESR_MODEL_PATH = os.getenv("SD_MODEL_PATH", r"models\weights\seesr")
+    SEESR_MODEL_PATH = os.getenv("SD_MODEL_PATH", r"D:\TJU\3.2\IntelliAnalyze\SeeSR-main\experience\manga\checkpoint-1000")
     PRETRAINED_MODEL_PATH = os.getenv("PRETRAINED_MODEL_PATH", r"models\weights\sd-turbo")
     
     # 输出目录

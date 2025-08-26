@@ -166,21 +166,12 @@ def initialize_models_and_pipeline(
     args.seed = seed
 
     args.prompt = ""
-    args.added_prompt =  (
-        "masterpiece, best quality, photorealistic, sharp focus, "
-        "accurate geometry, clean edges, fine microtexture, "
-        "natural lighting, realistic materials"
-    )
-    args.negative_prompt = (
-        "over-sharpening, over-smoothing, waxy skin, plastic look, "
-        "color bleeding, chromatic aberration, ringing, banding, "
-        "checkerboard artifacts, jpeg artifacts, noise, blur, glow, "
-        "low contrast, oversaturation, lowres, bad anatomy, extra digits"
-    )
+    args.added_prompt = "clean, high-resolution, 8k"
+    args.negative_prompt = "dotted, noise, blur, lowres, smooth"
     args.guidance_scale = 1.0
-    args.conditioning_scale = 1.0
+    args.conditioning_scale = 0.9 #1.0
     args.blending_alpha = 1.0
-    args.num_inference_steps = 8 #4 #2
+    args.num_inference_steps = 2 #8 #4 #2
     args.process_size = 512
     args.vae_decoder_tiled_size = 224
     args.vae_encoder_tiled_size = 1024
@@ -188,7 +179,7 @@ def initialize_models_and_pipeline(
     args.latent_tiled_overlap = 32
     args.upscale = 4
     args.sample_times = 1
-    args.align_method = "wavelet" #adain
+    args.align_method =  "wavelet"
     args.start_steps = 999
     args.start_point = "lr"
     args.save_prompts = False
