@@ -171,9 +171,9 @@ def initialize_models_and_pipeline(
     args.guidance_scale = 1.0
     args.conditioning_scale = 0.9 #1.0
     args.blending_alpha = 1.0
-    args.num_inference_steps = 2 #8 #4 #2
+    args.num_inference_steps = 8 #4 #2
     args.process_size = 512
-    args.vae_decoder_tiled_size = 224
+    args.vae_decoder_tiled_size = 128 #224
     args.vae_encoder_tiled_size = 1024
     args.latent_tiled_size = 96
     args.latent_tiled_overlap = 32
